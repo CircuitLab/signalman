@@ -12,7 +12,7 @@ Development under Mac OS X 10.8 Mountain Lion + Xcode 4.6
 
 ## Installation
 
-1. Install openFrameworks.
+1. Install dependencies.
 2. Clone git repo to openFrameworks app directory.
 3. Copy binary libs to bin/data/openni.
 4. Connect your Kinect to computer.
