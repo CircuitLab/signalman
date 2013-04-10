@@ -11,7 +11,6 @@
 		77EBF17C14BEF08600D2C8EC /* ofxOpenNITypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77EBF17914BEF08600D2C8EC /* ofxOpenNITypes.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		C3881F02171461BD00E13CCE /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3881EFF171461BD00E13CCE /* main.cpp */; };
-		C3881F03171461BD00E13CCE /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3881F00171461BD00E13CCE /* ofApp.cpp */; };
 		C3C101B1170EE8F80013B8A2 /* libnimCodecs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C101A3170EE8F80013B8A2 /* libnimCodecs.dylib */; };
 		C3C101B2170EE8F80013B8A2 /* libnimMockNodes.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C101A4170EE8F80013B8A2 /* libnimMockNodes.dylib */; };
 		C3C101B3170EE8F80013B8A2 /* libnimRecorder.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C101A5170EE8F80013B8A2 /* libnimRecorder.dylib */; };
@@ -222,8 +221,9 @@
 		77EBF17914BEF08600D2C8EC /* ofxOpenNITypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOpenNITypes.cpp; sourceTree = "<group>"; };
 		77EBF17A14BEF08600D2C8EC /* ofxOpenNITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOpenNITypes.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
+		C33DEAEA171577890092A76B /* CaptureState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptureState.h; sourceTree = "<group>"; };
+		C33DEAEB171579860092A76B /* ShareState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareState.h; sourceTree = "<group>"; };
 		C3881EFF171461BD00E13CCE /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		C3881F00171461BD00E13CCE /* ofApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofApp.cpp; sourceTree = "<group>"; };
 		C3881F01171461BD00E13CCE /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofApp.h; sourceTree = "<group>"; };
 		C3C101A3170EE8F80013B8A2 /* libnimCodecs.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimCodecs.dylib; path = ../../../addons/ofxOpenNI/mac/copy_to_data_openni_path/lib/libnimCodecs.dylib; sourceTree = "<group>"; };
 		C3C101A4170EE8F80013B8A2 /* libnimMockNodes.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimMockNodes.dylib; path = ../../../addons/ofxOpenNI/mac/copy_to_data_openni_path/lib/libnimMockNodes.dylib; sourceTree = "<group>"; };
@@ -239,6 +239,9 @@
 		C3C101AE170EE8F80013B8A2 /* libXnVFeatures_1_5_2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libXnVFeatures_1_5_2.dylib; path = ../../../addons/ofxOpenNI/mac/copy_to_data_openni_path/lib/libXnVFeatures_1_5_2.dylib; sourceTree = "<group>"; };
 		C3C101AF170EE8F80013B8A2 /* libXnVHandGenerator_1_5_2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libXnVHandGenerator_1_5_2.dylib; path = ../../../addons/ofxOpenNI/mac/copy_to_data_openni_path/lib/libXnVHandGenerator_1_5_2.dylib; sourceTree = "<group>"; };
 		C3C101B0170EE8F80013B8A2 /* libXnVNite_1_5_2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libXnVNite_1_5_2.dylib; path = ../../../addons/ofxOpenNI/mac/copy_to_data_openni_path/lib/libXnVNite_1_5_2.dylib; sourceTree = "<group>"; };
+		C3E87EA6171566A500FF66BB /* ofxState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxState.h; sourceTree = "<group>"; };
+		C3E87EA7171566A500FF66BB /* ofxStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxStateMachine.h; sourceTree = "<group>"; };
+		C3E87EA9171566F300FF66BB /* StartState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StartState.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -544,9 +547,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				77781EA614BA9AE300CD45EF /* src */,
-				770F031514B9969E003CCE99 /* lib */,
-				770F033314B996AE003CCE99 /* include */,
+				C3E87EA31715666800FF66BB /* ofxStatemachine */,
+				C3E87EA41715667400FF66BB /* ofxOpenNI */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -576,6 +578,44 @@
 				BBAB23BE13894E4700AA2426 /* GLUT.framework */,
 			);
 			name = "3rd party frameworks";
+			sourceTree = "<group>";
+		};
+		C3E87EA31715666800FF66BB /* ofxStatemachine */ = {
+			isa = PBXGroup;
+			children = (
+				C3E87EA5171566A500FF66BB /* src */,
+			);
+			name = ofxStatemachine;
+			sourceTree = "<group>";
+		};
+		C3E87EA41715667400FF66BB /* ofxOpenNI */ = {
+			isa = PBXGroup;
+			children = (
+				77781EA614BA9AE300CD45EF /* src */,
+				770F031514B9969E003CCE99 /* lib */,
+				770F033314B996AE003CCE99 /* include */,
+			);
+			name = ofxOpenNI;
+			sourceTree = "<group>";
+		};
+		C3E87EA5171566A500FF66BB /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C3E87EA6171566A500FF66BB /* ofxState.h */,
+				C3E87EA7171566A500FF66BB /* ofxStateMachine.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxStateMachine/src;
+			sourceTree = "<group>";
+		};
+		C3E87EA8171566E100FF66BB /* states */ = {
+			isa = PBXGroup;
+			children = (
+				C3E87EA9171566F300FF66BB /* StartState.h */,
+				C33DEAEA171577890092A76B /* CaptureState.h */,
+				C33DEAEB171579860092A76B /* ShareState.h */,
+			);
+			name = states;
 			sourceTree = "<group>";
 		};
 		E4328144138ABC890047C5CB /* Products */ = {
@@ -623,8 +663,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				C3E87EA8171566E100FF66BB /* states */,
 				C3881EFF171461BD00E13CCE /* main.cpp */,
-				C3881F00171461BD00E13CCE /* ofApp.cpp */,
 				C3881F01171461BD00E13CCE /* ofApp.h */,
 			);
 			path = src;
@@ -728,7 +768,6 @@
 				77CAE36B14BC009900772BC0 /* ofxOpenNI.cpp in Sources */,
 				77EBF17C14BEF08600D2C8EC /* ofxOpenNITypes.cpp in Sources */,
 				C3881F02171461BD00E13CCE /* main.cpp in Sources */,
-				C3881F03171461BD00E13CCE /* ofApp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

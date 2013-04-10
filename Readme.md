@@ -7,6 +7,7 @@ Play flag semaphore with the depth sensor!
 * Kinect
 * openFrameworks 0.7.4
   * gameoverhack/ofxOpenNI
+  * neilmendoza/ofxStateMachine
 
 Development under Mac OS X 10.8 Mountain Lion + Xcode 4.6
 
