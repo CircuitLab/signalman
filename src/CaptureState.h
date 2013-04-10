@@ -11,7 +11,7 @@
 
 #include "ofxState.h"
 
-class CaptureState : public Apex::ofxState<> {
+class CaptureState : public Apex::ofxState<SharedData> {
   
   string chars[8][8];
   
@@ -62,6 +62,7 @@ public:
   };
   
   void stateEnter() {
+    getSharedData().timestamp = ofGetUnixTime();
     openNIDevice.start();
   };
   

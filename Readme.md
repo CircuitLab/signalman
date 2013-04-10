@@ -6,6 +6,7 @@ Play flag semaphore with the depth sensor!
 
 * Kinect
 * openFrameworks 0.7.4
+  * ofxOsc
   * gameoverhack/ofxOpenNI
   * neilmendoza/ofxStateMachine
 

@@ -1,19 +1,31 @@
 #ifndef _OF_APP
 #define _OF_APP
 
-#include "ofxOpenNI.h"
 #include "ofMain.h"
+#include "ofxOsc.h"
+#include "ofxOpenNI.h"
+#include "ofxState.h"
 #include "ofxStateMachine.h"
 
+#include "SharedData.h"
 #include "StartState.h"
 #include "CaptureState.h"
 #include "ShareState.h"
 
 #define MAX_DEVICES 2
+#define OSC_SEND_HOST "localhost"
+#define OSC_SEND_PORT 3486  // node
+#define OSC_RECEIVE_PORT 9337 // of
 
 class ofApp : public ofBaseApp {
-
+  
+  ofxOscSender sender;
+  ofxOscReceiver receiver;
+  Apex::ofxStateMachine<SharedData> stateMachine;
+  
 public:
+  
+  typedef Apex::ofxStateMachine<SharedData>::StatePtr State;
   
   void
   setup() {
@@ -24,16 +36,36 @@ public:
     ofSetVerticalSync(true);
     ofBackground(0);
     
-    stateMachine.addState(new StartState());
-    stateMachine.addState(new CaptureState());
-    stateMachine.addState(new ShareState());
+    sender.setup(OSC_SEND_HOST, OSC_SEND_PORT);
+    receiver.setup(OSC_RECEIVE_PORT);
     
+    stateMachine.getSharedData().sender = sender;
+    stateMachine.getSharedData().receiver = receiver;
+    
+    State startState = stateMachine.addState<StartState>();
+    State captureState = stateMachine.addState<CaptureState>();
+    State shareState = stateMachine.addState<ShareState>();
+        
     stateMachine.changeState("start");
   };
   
   void
   update() {
     ofLog(OF_LOG_VERBOSE, "main:update");
+    
+    while (receiver.hasWaitingMessages()) {
+      ofxOscMessage message;
+      receiver.getNextMessage(&message);
+      
+      ofLog(OF_LOG_NOTICE, "osc received: " + message.getAddress());
+      
+      if (message.getAddress() == "/states/start") {
+        stateMachine.changeState("start");  // received after sharing.
+      } else if (message.getAddress() == "/states/capture") {
+        string text = message.getArgAsString(0);
+        stateMachine.changeState("capture");  // received after typing.
+      }
+    }
   };
   
   void
@@ -48,9 +80,7 @@ public:
   };
 
 private:
-  
-  Apex::ofxStateMachine<> stateMachine;
-  
+    
   void
   keyPressed(int key) {
     switch (key) {
@@ -62,6 +92,9 @@ private:
         break;
       case '3':
         stateMachine.changeState("share");
+        break;
+      case 'f':
+        ofToggleFullscreen();
         break;
     }
   };

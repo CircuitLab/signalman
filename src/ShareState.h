@@ -11,12 +11,16 @@
 
 #include "ofxState.h"
 
-class ShareState : public Apex::ofxState<> {
+class ShareState : public Apex::ofxState<SharedData> {
   
 public:
   
   void setup() {
     ofLog(OF_LOG_VERBOSE, "share:setup");
+  };
+  
+  void stateEnter() {
+    
   };
   
   void update() {
@@ -27,6 +31,10 @@ public:
     ofSetColor(255, 255, 255);
     ofDrawBitmapString("share", 15, 15);
     ofLog(OF_LOG_VERBOSE, "share:draw");
+  };
+  
+  void stateExit() {
+    
   };
   
   string getName() {
