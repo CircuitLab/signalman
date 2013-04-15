@@ -10,15 +10,25 @@
 #define Signalman_CaptureState_h
 
 #include "ofxState.h"
+#include "ofxHttpUtils.h"
+#include "ofxGifEncoder.h"
 
 class CaptureState : public Apex::ofxState<SharedData> {
   
+  string target;
+  int cursor;
   string chars[8][8];
+  ofVideoGrabber videoGrabber;
+  ofxOpenNI openNIDevice;
+  ofTrueTypeFont verdana;
+  ofxHttpUtils httpUtils;
+  ofxGifEncoder encoder;
+  vector<ofImage> images;
   
 public:
     
   void setup() {
-    ofLog(OF_LOG_VERBOSE, "capture:start");
+    ofLog(OF_LOG_NOTICE, "capture:start");
 
     chars[4][4] = " ";
     chars[5][4] = "A";
@@ -62,13 +72,26 @@ public:
   };
   
   void stateEnter() {
-    getSharedData().timestamp = ofGetUnixTime();
+    ofLog(OF_LOG_NOTICE, "capture:stateEnter");
+    getSharedData().timestamp = ofGetTimestampString();
     openNIDevice.start();
+    
+    videoGrabber.setVerbose(true);
+    videoGrabber.setDeviceID(2);
+    videoGrabber.initGrabber(1920, 1080);
+    
+    cursor = 0;
+    target = "YMCA";
+    
+    httpUtils.start();
+    encoder.setup(1080 / 4, 1920 / 4, .25, 256);
+    ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &CaptureState::onGifSaved);
   };
   
   void update() {
     ofLog(OF_LOG_VERBOSE, "capture:update");
     openNIDevice.update();
+    videoGrabber.grabFrame();
   };
   
   void draw() {
@@ -106,6 +129,31 @@ public:
       
       if (lp >= 0 && rp >= 0) {
         string c = chars[lp][rp];
+        
+        cout << c << ":" << target[cursor] << endl;
+        
+        if (c == ofToString(target[cursor])) {
+          ofImage image;
+          image.setFromPixels(videoGrabber.getPixels(), 1920, 1080, OF_IMAGE_COLOR);
+          image.rotate90(1);
+          images.push_back(image);
+          
+          ofDirectory::createDirectory(ofToDataPath(getSharedData().timestamp));
+          image.saveImage(getSharedData().timestamp + "/" + ofGetTimestampString() + ".jpg");
+          
+          if (++cursor >= target.length()) {
+
+            vector<ofImage>::iterator it = images.begin();
+            while (it != images.end()) {
+              it->resize(1080 / 4, 1920 / 4);
+              encoder.addFrame(*it, .1f);
+              ++it;
+            }
+            encoder.save(getSharedData().timestamp + ".gif");
+
+            return;
+          }
+        }
         verdana.drawString("[" + c + "] " + ofToString(lp) + ":" + ofToString(rp), 20, 100);
       }
     }
@@ -114,10 +162,12 @@ public:
   };
   
   void stateExit() {
+    ofLog(OF_LOG_NOTICE, "capture:stateExit");
+    videoGrabber.close();
   };
   
   void exit() {
-    openNIDevice.stop();    
+    openNIDevice.stop();
   };
   
   string getName() {
@@ -133,8 +183,56 @@ private:
       << "for hand" << event.id << "from device" << event.deviceID;
   };
   
-  ofxOpenNI openNIDevice;
-  ofTrueTypeFont verdana;
+  void
+  keyPressed(int key) {
+    switch (key) {
+      case ' ': {
+        ofImage image;
+        image.setFromPixels(videoGrabber.getPixels(), 1920, 1080, OF_IMAGE_COLOR);
+        image.rotate90(1);
+        images.push_back(image);
+        image.saveImage(getSharedData().timestamp + "/" + ofGetTimestampString() + ".jpg");
+        break;
+      }
+      case 's': {
+        ofxHttpForm form;
+        form.action = "http://localhost:3000/";
+        form.method = OFX_HTTP_POST;
+        form.addFormField("id", getSharedData().timestamp);
+        form.addFile("file", getSharedData().timestamp + ".gif");
+        httpUtils.addForm(form);
+        break;
+      }
+      case 'g': {
+        vector<ofImage>::iterator it = images.begin();
+        while (it != images.end()) {
+          it->resize(1080 / 4, 1920 / 4);
+          encoder.addFrame(*it, .1f);
+          ++it;
+        }
+        encoder.save(getSharedData().timestamp + ".gif");
+        break;
+      }
+    }
+  };
+  
+  void onResponse(ofxHttpResponse &response) {
+    ofLog(OF_LOG_NOTICE, ofToString(response.status));
+    ofLog(OF_LOG_NOTICE, ofToString(response.responseBody));
+  };
+  
+  void onGifSaved(string &filename) {
+    ofLog(OF_LOG_NOTICE, "gif saved as " + filename);
+    
+    ofxHttpForm form;
+    form.action = "http://localhost:3000/";
+    form.method = OFX_HTTP_POST;
+    form.addFormField("id", getSharedData().timestamp);
+    form.addFile("file", getSharedData().timestamp + ".gif");
+    httpUtils.addForm(form);
+    
+    encoder.reset();
+  };
 };
 
 #endif

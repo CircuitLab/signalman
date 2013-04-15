@@ -16,11 +16,11 @@ class ShareState : public Apex::ofxState<SharedData> {
 public:
   
   void setup() {
-    ofLog(OF_LOG_VERBOSE, "share:setup");
+    ofLog(OF_LOG_NOTICE, "share:setup");
   };
   
   void stateEnter() {
-    
+    ofLog(OF_LOG_NOTICE, "share:stateEnter");
   };
   
   void update() {
@@ -34,12 +34,15 @@ public:
   };
   
   void stateExit() {
-    
+    ofLog(OF_LOG_NOTICE, "share:stateExit");
   };
   
   string getName() {
     return "share";
   };
+  
+private:
+  
 };
 
 #endif

@@ -10,6 +10,10 @@
 		77CAE36B14BC009900772BC0 /* ofxOpenNI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77CAE36514BC009900772BC0 /* ofxOpenNI.cpp */; };
 		77EBF17C14BEF08600D2C8EC /* ofxOpenNITypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77EBF17914BEF08600D2C8EC /* ofxOpenNITypes.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		C3381F40171BBE3F00C69CEC /* ofxHttpUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3381F3C171BBE3F00C69CEC /* ofxHttpUtils.cpp */; };
+		C3381F42171BC18F00C69CEC /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3381F41171BC18F00C69CEC /* QTKit.framework */; };
+		C3381F44171BC27900C69CEC /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3381F43171BC27900C69CEC /* CoreVideo.framework */; };
+		C3381F50171BFE9500C69CEC /* ofxGifEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3381F4C171BFE9500C69CEC /* ofxGifEncoder.cpp */; };
 		C34E649C17159D5300F26CAB /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C34E647817159D5300F26CAB /* IpEndpointName.cpp */; };
 		C34E649D17159D5300F26CAB /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C34E647D17159D5300F26CAB /* NetworkingUtils.cpp */; };
 		C34E649E17159D5300F26CAB /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C34E647E17159D5300F26CAB /* UdpSocket.cpp */; };
@@ -234,6 +238,13 @@
 		77EBF17914BEF08600D2C8EC /* ofxOpenNITypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOpenNITypes.cpp; sourceTree = "<group>"; };
 		77EBF17A14BEF08600D2C8EC /* ofxOpenNITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOpenNITypes.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
+		C3381F3B171BBE3F00C69CEC /* ofxHttpTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHttpTypes.h; sourceTree = "<group>"; };
+		C3381F3C171BBE3F00C69CEC /* ofxHttpUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxHttpUtils.cpp; sourceTree = "<group>"; };
+		C3381F3D171BBE3F00C69CEC /* ofxHttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxHttpUtils.h; sourceTree = "<group>"; };
+		C3381F41171BC18F00C69CEC /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
+		C3381F43171BC27900C69CEC /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		C3381F4C171BFE9500C69CEC /* ofxGifEncoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxGifEncoder.cpp; sourceTree = "<group>"; };
+		C3381F4D171BFE9500C69CEC /* ofxGifEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxGifEncoder.h; sourceTree = "<group>"; };
 		C33DEAEA171577890092A76B /* CaptureState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CaptureState.h; sourceTree = "<group>"; };
 		C33DEAEB171579860092A76B /* ShareState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareState.h; sourceTree = "<group>"; };
 		C34E647817159D5300F26CAB /* IpEndpointName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IpEndpointName.cpp; sourceTree = "<group>"; };
@@ -314,6 +325,8 @@
 			files = (
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
 				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
+				C3381F42171BC18F00C69CEC /* QTKit.framework in Frameworks */,
+				C3381F44171BC27900C69CEC /* CoreVideo.framework in Frameworks */,
 				E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */,
 				E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */,
 				E45BE97D0E8CC7DD009D7055 /* AudioToolbox.framework in Frameworks */,
@@ -593,6 +606,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				C3381F45171BFE9500C69CEC /* ofxGifEncoder */,
+				C3381F2C171BBE3E00C69CEC /* ofxHttpUtils */,
 				C34E647317159D3500F26CAB /* ofxOsc */,
 				C3E87EA31715666800FF66BB /* ofxStatemachine */,
 				C3E87EA41715667400FF66BB /* ofxOpenNI */,
@@ -603,6 +618,8 @@
 		BBAB23C913894ECA00AA2426 /* system frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3381F43171BC27900C69CEC /* CoreVideo.framework */,
+				C3381F41171BC18F00C69CEC /* QTKit.framework */,
 				E4C2424410CC5A17004149E2 /* AppKit.framework */,
 				E4C2424510CC5A17004149E2 /* Cocoa.framework */,
 				E4C2424610CC5A17004149E2 /* IOKit.framework */,
@@ -625,6 +642,43 @@
 				BBAB23BE13894E4700AA2426 /* GLUT.framework */,
 			);
 			name = "3rd party frameworks";
+			sourceTree = "<group>";
+		};
+		C3381F2C171BBE3E00C69CEC /* ofxHttpUtils */ = {
+			isa = PBXGroup;
+			children = (
+				C3381F3A171BBE3E00C69CEC /* src */,
+			);
+			name = ofxHttpUtils;
+			path = ../../../addons/ofxHttpUtils;
+			sourceTree = "<group>";
+		};
+		C3381F3A171BBE3E00C69CEC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C3381F3B171BBE3F00C69CEC /* ofxHttpTypes.h */,
+				C3381F3C171BBE3F00C69CEC /* ofxHttpUtils.cpp */,
+				C3381F3D171BBE3F00C69CEC /* ofxHttpUtils.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		C3381F45171BFE9500C69CEC /* ofxGifEncoder */ = {
+			isa = PBXGroup;
+			children = (
+				C3381F4B171BFE9500C69CEC /* src */,
+			);
+			name = ofxGifEncoder;
+			path = ../../../addons/ofxGifEncoder;
+			sourceTree = "<group>";
+		};
+		C3381F4B171BFE9500C69CEC /* src */ = {
+			isa = PBXGroup;
+			children = (
+				C3381F4C171BFE9500C69CEC /* ofxGifEncoder.cpp */,
+				C3381F4D171BFE9500C69CEC /* ofxGifEncoder.h */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		C34E647317159D3500F26CAB /* ofxOsc */ = {
@@ -934,6 +988,8 @@
 				C34E64A617159D5300F26CAB /* ofxOscMessage.cpp in Sources */,
 				C34E64A717159D5300F26CAB /* ofxOscReceiver.cpp in Sources */,
 				C34E64A817159D5300F26CAB /* ofxOscSender.cpp in Sources */,
+				C3381F40171BBE3F00C69CEC /* ofxHttpUtils.cpp in Sources */,
+				C3381F50171BFE9500C69CEC /* ofxGifEncoder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -977,6 +1033,7 @@
 					"-D__MACOSX_CORE__",
 					"-lpthread",
 				);
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -1011,6 +1068,7 @@
 					"-D__MACOSX_CORE__",
 					"-lpthread",
 				);
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};
@@ -1122,6 +1180,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(SRCROOT)/bin/data/openni/lib\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1233,6 +1292,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(SRCROOT)/bin/data/openni/lib\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -29,8 +29,8 @@ public:
   
   void
   setup() {
-    ofSetLogLevel(OF_LOG_VERBOSE);
-    ofLog(OF_LOG_VERBOSE, "main:setup");
+    // ofSetLogLevel(OF_LOG_VERBOSE);
+    ofLog(OF_LOG_NOTICE, "main:setup");
 
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
@@ -76,7 +76,7 @@ public:
     
   void
   exit() {
-    
+    ofLog(OF_LOG_NOTICE, "main:exit");
   };
 
 private:

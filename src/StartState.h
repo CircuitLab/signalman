@@ -16,11 +16,11 @@ class StartState : public Apex::ofxState<SharedData> {
 public:
   
   void setup() {
-    ofLog(OF_LOG_VERBOSE, "start:setup");
+    ofLog(OF_LOG_NOTICE, "start:setup");
   };
   
   void stateEnter() {
-    
+    ofLog(OF_LOG_NOTICE, "start:stateEnter");
   };
   
   void update() {
@@ -34,7 +34,7 @@ public:
   };
   
   void stateExit() {
-    
+    ofLog(OF_LOG_NOTICE, "start:stateExit");
   };
   
   string getName() {
@@ -42,6 +42,7 @@ public:
   };
   
 private:
+  
 };
 
 #endif

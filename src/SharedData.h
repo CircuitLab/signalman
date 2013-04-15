@@ -13,7 +13,7 @@ class SharedData {
 
 public:
   
-  unsigned int timestamp;
+  string timestamp;
   ofxOscSender sender;
   ofxOscReceiver receiver;
 };
