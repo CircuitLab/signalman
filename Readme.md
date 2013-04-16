@@ -9,6 +9,8 @@ Play flag semaphore with the depth sensor!
   * ofxOsc
   * gameoverhack/ofxOpenNI
   * neilmendoza/ofxStateMachine
+  * jesusgollonet/ofxGifEncoder
+  * arturoc/ofxHttpUtils
 
 Development under Mac OS X 10.8 Mountain Lion + Xcode 4.6
 
@@ -20,6 +22,6 @@ Development under Mac OS X 10.8 Mountain Lion + Xcode 4.6
 4. Connect your Kinect to computer.
 5. Compile!
 
-## Lisence
+## License
 
 Copyright &copy; 2013 Circuit Lab. MIT Licensed.
