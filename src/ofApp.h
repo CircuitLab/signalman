@@ -60,7 +60,10 @@ public:
       ofLog(OF_LOG_NOTICE, "osc received: " + message.getAddress());
       
       if (message.getAddress() == "/states/start") {
-        stateMachine.changeState("start");  // received after sharing.
+        stateMachine.getSharedData().timestamp = ofToString(message.getArgAsInt64(0));
+        stateMachine.getSharedData().target = message.getArgAsString(1);
+        sleep(1);
+        stateMachine.changeState("capture");  // received after sharing.
       } else if (message.getAddress() == "/states/capture") {
         string text = message.getArgAsString(0);
         stateMachine.changeState("capture");  // received after typing.

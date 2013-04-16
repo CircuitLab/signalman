@@ -68,6 +68,7 @@ public:
     // openNIDevice.startPlayer("test.oni");
     openNIDevice.setSkeletonProfile(XN_SKEL_PROFILE_UPPER);
     openNIDevice.addDepthGenerator();
+    openNIDevice.addImageGenerator();
     openNIDevice.setRegister(true);
     openNIDevice.setMirror(true);
     openNIDevice.addUserGenerator();
@@ -78,11 +79,9 @@ public:
   };
   
   void stateEnter() {
-    ofLog(OF_LOG_NOTICE, "capture:stateEnter");
-    getSharedData().timestamp = ofGetTimestampString();
-    
+    ofLog(OF_LOG_NOTICE, "capture:stateEnter");    
     cursor = 0;
-    target = "YMCA";
+    target = getSharedData().target;
     isCapturing = true;
 
     openNIDevice.start();
@@ -174,6 +173,12 @@ public:
           }
           encoder.save(getSharedData().timestamp + ".gif");
           return;
+        } else {
+          ofxOscMessage message;
+          message.setAddress("/captured");
+          message.addStringArg(ofToString(capturedChar));
+          message.addStringArg(ofToString(target[cursor]));
+          getSharedData().sender.sendMessage(message);
         }
       }
       
@@ -230,7 +235,8 @@ private:
       }
       case 's': {
         ofxHttpForm form;
-        form.action = "http://localhost:3000/";
+        form.action = "http://localhost:3000/plays/" + getSharedData().timestamp + "/pictures";
+        cout << form.action << endl;
         form.method = OFX_HTTP_POST;
         form.addFormField("id", getSharedData().timestamp);
         form.addFile("file", getSharedData().timestamp + ".gif");
@@ -254,7 +260,8 @@ private:
     ofLog(OF_LOG_NOTICE, "gif saved as " + filename);
     
     ofxHttpForm form;
-    form.action = "http://localhost:3000/";
+    form.action = "http://localhost:3000/plays/" + getSharedData().timestamp + "/pictures";
+    // /plays/:timestamp/pictures
     form.method = OFX_HTTP_POST;
     form.addFormField("id", getSharedData().timestamp);
     form.addFile("file", getSharedData().timestamp + ".gif");

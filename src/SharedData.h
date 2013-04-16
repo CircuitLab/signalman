@@ -14,6 +14,7 @@ class SharedData {
 public:
   
   string timestamp;
+  string target;
   ofxOscSender sender;
   ofxOscReceiver receiver;
 };
