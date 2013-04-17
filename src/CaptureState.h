@@ -94,6 +94,7 @@ public:
     flash = 0;
     cursor = 0;
     target = getSharedData().target;
+    captured.clear();
     isCapturing = true;
 
     openNIDevice.start();
