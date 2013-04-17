@@ -12,7 +12,6 @@
 #include "CaptureState.h"
 #include "ShareState.h"
 
-#define MAX_DEVICES 2
 #define OSC_SEND_HOST "localhost"
 #define OSC_SEND_PORT 3486  // node
 #define OSC_RECEIVE_PORT 9337 // of
@@ -62,11 +61,10 @@ public:
       if (message.getAddress() == "/states/start") {
         stateMachine.getSharedData().timestamp = ofToString(message.getArgAsInt64(0));
         stateMachine.getSharedData().target = message.getArgAsString(1);
-        sleep(1);
         stateMachine.changeState("capture");  // received after sharing.
       } else if (message.getAddress() == "/states/capture") {
         string text = message.getArgAsString(0);
-        stateMachine.changeState("capture");  // received after typing.
+        stateMachine.changeState("share");  // received after typing.
       }
     }
   };

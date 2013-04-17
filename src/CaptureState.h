@@ -15,21 +15,25 @@
 
 #define CAMERA_WIDTH 1920
 #define CAMERA_HEIGHT 1080
+#define CAMERA_DEVICE_ID 1
 
 class CaptureState : public Apex::ofxState<SharedData> {
   
   string target;
+  int flash;
   int cursor;
   char chars[8][8];
+  bool isCapturing;
+  char capturedChar;
+  char nextChar;
+  map<string, ofImage> images;
+  unsigned char * mirrored;
+  ofImage logo;
+  ofTrueTypeFont courier;
   ofVideoGrabber videoGrabber;
   ofxOpenNI openNIDevice;
   ofxHttpUtils httpUtils;
   ofxGifEncoder encoder;
-  vector<ofImage> images;
-  unsigned char * mirrored;
-  bool isCapturing;
-  char capturedChar;
-  char nextChar;
 
 public:
     
@@ -66,14 +70,20 @@ public:
     
     openNIDevice.setup();
     // openNIDevice.startPlayer("test.oni");
-    openNIDevice.setSkeletonProfile(XN_SKEL_PROFILE_UPPER);
+    // openNIDevice.setSkeletonProfile(XN_SKEL_PROFILE_UPPER);
     openNIDevice.addDepthGenerator();
     openNIDevice.addImageGenerator();
     openNIDevice.setRegister(true);
     openNIDevice.setMirror(true);
     openNIDevice.addUserGenerator();
     
+    logo.loadImage("futuresemaphore_logo.png");
+    logo.resize(500, 400);
+    
+    courier.loadFont("Courier New Bold.ttf", 64);
+    
     ofAddListener(httpUtils.newResponseEvent, this, &CaptureState::onResponse);
+    ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &CaptureState::onGifSaved);
     
     mirrored = new unsigned char[CAMERA_WIDTH * CAMERA_HEIGHT * 3];
   };
@@ -87,12 +97,11 @@ public:
     openNIDevice.start();
     
     videoGrabber.setVerbose(true);
-    videoGrabber.setDeviceID(2);
+    videoGrabber.setDeviceID(CAMERA_DEVICE_ID);
     videoGrabber.initGrabber(CAMERA_WIDTH, CAMERA_HEIGHT);
     
     httpUtils.start();
     encoder.setup(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4, .25, 256);
-    ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &CaptureState::onGifSaved);
   };
   
   void update() {
@@ -117,8 +126,23 @@ public:
     openNIDevice.drawDebug(0.5, 0.5);
     ofPopMatrix();
     
+    ofEnableAlphaBlending();
+    logo.draw(ofGetHeight() - logo.getWidth(), ofGetHeight() - logo.getHeight());
+    ofDisableAlphaBlending();
+    
     ofSetColor(255, 255, 255);
     ofDrawBitmapString("capture", 15, 15);
+        
+    if (flash > 0) {
+      ofPushStyle();
+      ofEnableAlphaBlending();
+      ofSetColor(255, 255, 255, flash);
+      ofRect(0, 0, ofGetWidth(), ofGetHeight());
+      ofDisableAlphaBlending();
+      ofPopStyle();
+      flash -= 3;
+      return;
+    }
     
     if (!isCapturing) return;
     
@@ -153,22 +177,20 @@ public:
       char c = chars[lp][rp];
       
       if (c == target[cursor]) {  // captured!
+        flash = 255;
         capturedChar = c;
         
         ofImage image;
         image.setFromPixels(videoGrabber.getPixels(), CAMERA_WIDTH, CAMERA_HEIGHT, OF_IMAGE_COLOR);
         image.rotate90(1);
-        images.push_back(image);
-        
-        ofDirectory::createDirectory(ofToDataPath(getSharedData().timestamp));
-        image.saveImage(getSharedData().timestamp + "/" + ofGetTimestampString() + ".jpg");
+        images.insert(map<string, ofImage>::value_type(ofGetTimestampString(), image));
         
         if (++cursor >= target.length()) {
           isCapturing = false;
-          vector<ofImage>::iterator it = images.begin();
+          map<string, ofImage>::iterator it = images.begin();
           while (it != images.end()) {
-            it->resize(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4);
-            encoder.addFrame(*it, .1f);
+            (*it).second.resize(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4);
+            encoder.addFrame((*it).second, .1f);
             ++it;
           }
           encoder.save(getSharedData().timestamp + ".gif");
@@ -185,6 +207,11 @@ public:
       ofDrawBitmapString("captured: " + ofToString(c), 20, 100);
       ofDrawBitmapString("    next: " + ofToString(target[cursor]), 20, 120);
       ofDrawBitmapString("          " + ofToString(lp) + ":" + ofToString(rp), 20, 80);
+      
+      // ofPushStyle();
+      // ofSetColor(255, 255, 255, 0.5);
+      courier.drawString(ofToString(target[cursor]), 100, 100);
+      // ofPopStyle();
     }
     
     ofPopMatrix();
@@ -225,34 +252,6 @@ private:
         }
         break;
       }
-      case ' ': {
-        ofImage image;
-        image.setFromPixels(videoGrabber.getPixels(), CAMERA_WIDTH, CAMERA_HEIGHT, OF_IMAGE_COLOR);
-        image.rotate90(1);
-        images.push_back(image);
-        image.saveImage(getSharedData().timestamp + "/" + ofGetTimestampString() + ".jpg");
-        break;
-      }
-      case 's': {
-        ofxHttpForm form;
-        form.action = "http://localhost:3000/plays/" + getSharedData().timestamp + "/pictures";
-        cout << form.action << endl;
-        form.method = OFX_HTTP_POST;
-        form.addFormField("id", getSharedData().timestamp);
-        form.addFile("file", getSharedData().timestamp + ".gif");
-        httpUtils.addForm(form);
-        break;
-      }
-      case 'g': {
-        vector<ofImage>::iterator it = images.begin();
-        while (it != images.end()) {
-          it->resize(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4);
-          encoder.addFrame(*it, .1f);
-          ++it;
-        }
-        encoder.save(getSharedData().timestamp + ".gif");
-        break;
-      }
     }
   };
   
@@ -261,12 +260,21 @@ private:
     
     ofxHttpForm form;
     form.action = "http://localhost:3000/plays/" + getSharedData().timestamp + "/pictures";
-    // /plays/:timestamp/pictures
     form.method = OFX_HTTP_POST;
     form.addFormField("id", getSharedData().timestamp);
-    form.addFile("file", getSharedData().timestamp + ".gif");
-    httpUtils.addForm(form);
+    form.addFile("file:gif", getSharedData().timestamp + ".gif");
     
+    ofDirectory::createDirectory(ofToDataPath(getSharedData().timestamp));
+    map<string, ofImage>::iterator it = images.begin();
+    
+    while (it != images.end()) {
+      string path = getSharedData().timestamp + "/" + (*it).first + ".jpg";
+      (*it).second.saveImage(path);
+      form.addFile("file:jpg:" + path, path);
+      ++it;
+    }
+     
+    httpUtils.addForm(form);
     encoder.reset();
   };
   

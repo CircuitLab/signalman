@@ -13,10 +13,13 @@
 
 class StartState : public Apex::ofxState<SharedData> {
 
+  ofImage title;
+  
 public:
   
   void setup() {
     ofLog(OF_LOG_NOTICE, "start:setup");
+    title.loadImage("tebata_home.png");
   };
   
   void stateEnter() {
@@ -28,9 +31,11 @@ public:
   };
   
   void draw() {
+    ofLog(OF_LOG_VERBOSE, "start:draw");
+    
     ofSetColor(255, 255, 255);
     ofDrawBitmapString("start", 15, 15);
-    ofLog(OF_LOG_VERBOSE, "start:draw");
+    title.draw(0, 0);
   };
   
   void stateExit() {

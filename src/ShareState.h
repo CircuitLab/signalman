@@ -13,10 +13,13 @@
 
 class ShareState : public Apex::ofxState<SharedData> {
   
+  ofImage title;
+  
 public:
   
   void setup() {
     ofLog(OF_LOG_NOTICE, "share:setup");
+    title.loadImage("end.png");
   };
   
   void stateEnter() {
@@ -28,9 +31,11 @@ public:
   };
   
   void draw() {
+    ofLog(OF_LOG_VERBOSE, "share:draw");
+
     ofSetColor(255, 255, 255);
     ofDrawBitmapString("share", 15, 15);
-    ofLog(OF_LOG_VERBOSE, "share:draw");
+    title.draw(0, 0);
   };
   
   void stateExit() {
