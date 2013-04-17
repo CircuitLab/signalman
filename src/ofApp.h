@@ -35,7 +35,7 @@ public:
     ofSetVerticalSync(true);
     ofBackground(0);
     
-    ofFullscreen();
+    ofSetFullscreen(true);
     ofHideCursor();
     
     sender.setup(OSC_SEND_HOST, OSC_SEND_PORT);
