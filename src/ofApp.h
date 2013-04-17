@@ -44,6 +44,12 @@ public:
     stateMachine.getSharedData().sender = sender;
     stateMachine.getSharedData().receiver = receiver;
     
+    for (char c = 'a'; c <= 'z'; ++c) {
+      ofImage image;
+      image.loadImage("guides/" + ofToString(c) + ".jpg");
+      stateMachine.getSharedData().images.insert(map<string, ofImage>::value_type(ofToString(c), image));
+    }
+    
     State startState = stateMachine.addState<StartState>();
     State captureState = stateMachine.addState<CaptureState>();
     State shareState = stateMachine.addState<ShareState>();
@@ -54,6 +60,8 @@ public:
   void
   update() {
     ofLog(OF_LOG_VERBOSE, "main:update");
+    
+    // cout << receiver.hasWaitingMessages() << endl;
     
     while (receiver.hasWaitingMessages()) {
       ofxOscMessage message;

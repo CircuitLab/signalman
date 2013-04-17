@@ -27,8 +27,8 @@ class CaptureState : public Apex::ofxState<SharedData> {
   char capturedChar;
   char nextChar;
   map<string, ofImage> images;
-  unsigned char * mirrored;
   ofImage logo;
+  ofImage guide;
   ofSoundPlayer shutter;
   ofTrueTypeFont courier;
   ofVideoGrabber videoGrabber;
@@ -71,11 +71,12 @@ public:
     
     openNIDevice.setup();
     // openNIDevice.startPlayer("test.oni");
-    // openNIDevice.setSkeletonProfile(XN_SKEL_PROFILE_UPPER);
+    openNIDevice.setSkeletonProfile(XN_SKEL_PROFILE_UPPER);
     openNIDevice.addDepthGenerator();
     openNIDevice.addImageGenerator();
     openNIDevice.setRegister(true);
     openNIDevice.setMirror(true);
+    openNIDevice.setMaxNumUsers(100);
     openNIDevice.addUserGenerator();
     
     logo.loadImage("futuresemaphore_logo.png");
@@ -83,12 +84,10 @@ public:
     
     shutter.loadSound("shutter.wav");
     
-    courier.loadFont("Courier New Bold.ttf", 64);
+    courier.loadFont("Courier New Bold.ttf", 192);
     
     ofAddListener(httpUtils.newResponseEvent, this, &CaptureState::onResponse);
     ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &CaptureState::onGifSaved);
-    
-    mirrored = new unsigned char[CAMERA_WIDTH * CAMERA_HEIGHT * 3];
   };
   
   void stateEnter() {
@@ -105,7 +104,7 @@ public:
     videoGrabber.initGrabber(CAMERA_WIDTH, CAMERA_HEIGHT);
     
     httpUtils.start();
-    encoder.setup(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4, .25, 256);
+    encoder.setup(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4, .25, 128);
   };
   
   void update() {
@@ -119,7 +118,7 @@ public:
     ofLog(OF_LOG_VERBOSE, "capture:draw");
 
     // capturedFromCamera = videoGrabber.getTextureReference();
-    // capturedFromCamera.setFromPixels(videoGrabber.getPixels(), CAMERA_WITH, 1080, OF_IMAGE_COLOR);
+    // capturedFromCamera.setFromPixels(videoGrabber.getPixels(), CAMERA_WITH, CAMERA_HEIGHT, OF_IMAGE_COLOR);
     // capturedFromCamera.resize(192, 108);
     // capturedFromCamera.mirror(false, true);
     // capturedFromCamera.rotate90(3);
@@ -131,9 +130,9 @@ public:
     ofPopMatrix();
     
     ofEnableAlphaBlending();
-    logo.draw(ofGetHeight() - logo.getWidth(), ofGetHeight() - logo.getHeight());
+    logo.draw(ofGetWidth() - logo.getWidth(), ofGetHeight() - logo.getHeight());
     ofDisableAlphaBlending();
-    
+        
     ofSetColor(255, 255, 255);
     ofDrawBitmapString("capture", 15, 15);
         
@@ -150,10 +149,13 @@ public:
     
     if (!isCapturing) return;
     
+    // guide = getSharedData().images[ofToLower(ofToString(target[cursor]))];
+    // guide.draw(500, 0);
+    
     ofPushMatrix();
     
     int numUsers = openNIDevice.getNumTrackedUsers();
-    cout << numUsers << " users found." << endl;
+    // cout << numUsers << " users found." << endl;
     
     for (int i = 0; i < numUsers; i++) {
       ofxOpenNIUser &user = openNIDevice.getTrackedUser(i);
@@ -196,7 +198,7 @@ public:
           map<string, ofImage>::iterator it = images.begin();
           while (it != images.end()) {
             (*it).second.resize(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4);
-            encoder.addFrame((*it).second, .1f);
+            encoder.addFrame((*it).second, .2f);
             ++it;
           }
           encoder.save(getSharedData().timestamp + ".gif");
@@ -214,10 +216,10 @@ public:
       ofDrawBitmapString("    next: " + ofToString(target[cursor]), 20, 120);
       ofDrawBitmapString("          " + ofToString(lp) + ":" + ofToString(rp), 20, 80);
       
-      // ofPushStyle();
-      // ofSetColor(255, 255, 255, 0.5);
-      courier.drawString(ofToString(target[cursor]), 100, 100);
-      // ofPopStyle();
+      ofPushStyle();
+      ofSetColor(255, 255, 255, 192);
+      courier.drawString(ofToString(target[cursor]), 200, 200);
+      ofPopStyle();
     }
     
     ofPopMatrix();
