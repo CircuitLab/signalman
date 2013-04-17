@@ -13,9 +13,8 @@
 #include "ofxHttpUtils.h"
 #include "ofxGifEncoder.h"
 
-#define CAMERA_WIDTH 1920
-#define CAMERA_HEIGHT 1080
-#define CAMERA_DEVICE_ID 1
+#define CAMERA_WIDTH 1280
+#define CAMERA_HEIGHT 1024
 
 class CaptureState : public Apex::ofxState<SharedData> {
   
@@ -26,12 +25,11 @@ class CaptureState : public Apex::ofxState<SharedData> {
   bool isCapturing;
   char capturedChar;
   char nextChar;
-  map<string, ofImage> images;
+  map<string, ofImage> captured;
   ofImage logo;
   ofImage guide;
   ofSoundPlayer shutter;
   ofTrueTypeFont courier;
-  ofVideoGrabber videoGrabber;
   ofxOpenNI openNIDevice;
   ofxHttpUtils httpUtils;
   ofxGifEncoder encoder;
@@ -72,6 +70,7 @@ public:
     openNIDevice.setup();
     // openNIDevice.startPlayer("test.oni");
     openNIDevice.setSkeletonProfile(XN_SKEL_PROFILE_UPPER);
+    openNIDevice.setResolution(1280, 1024, 30);
     openNIDevice.addDepthGenerator();
     openNIDevice.addImageGenerator();
     openNIDevice.setRegister(true);
@@ -99,38 +98,27 @@ public:
 
     openNIDevice.start();
     
-    videoGrabber.setVerbose(true);
-    videoGrabber.setDeviceID(CAMERA_DEVICE_ID);
-    videoGrabber.initGrabber(CAMERA_WIDTH, CAMERA_HEIGHT);
-    
     httpUtils.start();
-    encoder.setup(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4, .25, 128);
+    encoder.setup(CAMERA_WIDTH / 4, CAMERA_HEIGHT / 4, .25, 64);
   };
   
   void update() {
     ofLog(OF_LOG_VERBOSE, "capture:update");
     
     openNIDevice.update();
-    videoGrabber.grabFrame();
   };
   
   void draw() {
     ofLog(OF_LOG_VERBOSE, "capture:draw");
-
-    // capturedFromCamera = videoGrabber.getTextureReference();
-    // capturedFromCamera.setFromPixels(videoGrabber.getPixels(), CAMERA_WITH, CAMERA_HEIGHT, OF_IMAGE_COLOR);
-    // capturedFromCamera.resize(192, 108);
-    // capturedFromCamera.mirror(false, true);
-    // capturedFromCamera.rotate90(3);
-    // capturedFromCamera.draw(0, 0);
-    videoGrabber.draw(0, 0);
     
-    ofPushMatrix();
-    openNIDevice.drawDebug(0.5, 0.5);
-    ofPopMatrix();
+    // ofPushMatrix();
+    // openNIDevice.drawDebug();
+    // ofPopMatrix();
+    
+    openNIDevice.drawImage();
     
     ofEnableAlphaBlending();
-    logo.draw(ofGetWidth() - logo.getWidth(), ofGetHeight() - logo.getHeight());
+    logo.draw(0, 0);
     ofDisableAlphaBlending();
         
     ofSetColor(255, 255, 255);
@@ -149,8 +137,7 @@ public:
     
     if (!isCapturing) return;
     
-    guide = getSharedData().images[ofToLower(ofToString(target[cursor]))];
-    guide.draw(500, 0);
+    guide = getSharedData().guides[ofToLower(ofToString(target[cursor]))];
     
     ofPushMatrix();
     
@@ -189,15 +176,14 @@ public:
         shutter.play();
         
         ofImage image;
-        image.setFromPixels(videoGrabber.getPixels(), CAMERA_WIDTH, CAMERA_HEIGHT, OF_IMAGE_COLOR);
-        image.rotate90(1);
-        images.insert(map<string, ofImage>::value_type(ofGetTimestampString(), image));
+        image.setFromPixels(openNIDevice.getImagePixels());
+        captured.insert(map<string, ofImage>::value_type(ofGetTimestampString(), image));
         
         if (++cursor >= target.length()) {
           isCapturing = false;
-          map<string, ofImage>::iterator it = images.begin();
-          while (it != images.end()) {
-            (*it).second.resize(CAMERA_HEIGHT / 4, CAMERA_WIDTH / 4);
+          map<string, ofImage>::iterator it = captured.begin();
+          while (it != captured.end()) {
+            (*it).second.resize(CAMERA_WIDTH / 4, CAMERA_HEIGHT / 4);
             encoder.addFrame((*it).second, .2f);
             ++it;
           }
@@ -215,6 +201,8 @@ public:
       ofDrawBitmapString("captured: " + ofToString(c), 20, 100);
       ofDrawBitmapString("    next: " + ofToString(target[cursor]), 20, 120);
       ofDrawBitmapString("          " + ofToString(lp) + ":" + ofToString(rp), 20, 80);
+      
+      guide.draw(ofGetWidth() - logo.getWidth(), ofGetHeight() - logo.getHeight());
       
       ofPushStyle();
       ofSetColor(255, 255, 255, 192);
@@ -273,9 +261,9 @@ private:
     form.addFile("file:gif", getSharedData().timestamp + ".gif");
     
     ofDirectory::createDirectory(ofToDataPath(getSharedData().timestamp));
-    map<string, ofImage>::iterator it = images.begin();
+    map<string, ofImage>::iterator it = captured.begin();
     
-    while (it != images.end()) {
+    while (it != captured.end()) {
       string path = getSharedData().timestamp + "/" + (*it).first + ".jpg";
       (*it).second.saveImage(path);
       form.addFile("file:jpg:" + path, path);
@@ -295,7 +283,8 @@ private:
     message.addStringArg(getSharedData().timestamp);
     message.addStringArg(target);
     getSharedData().sender.sendMessage(message);
-
+    
+    // getSharedData().captured = captured;
     changeState("share");
   };
 };

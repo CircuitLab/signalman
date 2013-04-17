@@ -47,7 +47,7 @@ public:
     for (char c = 'a'; c <= 'z'; ++c) {
       ofImage image;
       image.loadImage("guides/" + ofToString(c) + ".jpg");
-      stateMachine.getSharedData().images.insert(map<string, ofImage>::value_type(ofToString(c), image));
+      stateMachine.getSharedData().guides.insert(map<string, ofImage>::value_type(ofToString(c), image));
     }
     
     State startState = stateMachine.addState<StartState>();
@@ -60,8 +60,6 @@ public:
   void
   update() {
     ofLog(OF_LOG_VERBOSE, "main:update");
-    
-    // cout << receiver.hasWaitingMessages() << endl;
     
     while (receiver.hasWaitingMessages()) {
       ofxOscMessage message;

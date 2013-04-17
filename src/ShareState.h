@@ -14,6 +14,8 @@
 class ShareState : public Apex::ofxState<SharedData> {
   
   ofImage title;
+  // map<string, ofImage> captured;
+  // map<string, ofImage>::iterator it;
   
 public:
   
@@ -24,6 +26,9 @@ public:
   
   void stateEnter() {
     ofLog(OF_LOG_NOTICE, "share:stateEnter");
+    
+    // captured = getSharedData().captured;
+    // it = captured.begin();
   };
   
   void update() {
@@ -32,6 +37,10 @@ public:
   
   void draw() {
     ofLog(OF_LOG_VERBOSE, "share:draw");
+    
+    // it->second.draw(0, 0);
+    // ++it;
+    // if (it == captured.end()) it = captured.begin();
 
     ofSetColor(255, 255, 255);
     ofDrawBitmapString("share", 15, 15);

@@ -17,7 +17,8 @@ public:
   string target;
   ofxOscSender sender;
   ofxOscReceiver receiver;
-  map<string, ofImage> images;
+  map<string, ofImage> guides;
+  map<string, ofImage> captured;
 };
 
 #endif

@@ -32,7 +32,7 @@ public:
   
   void draw() {
     ofLog(OF_LOG_VERBOSE, "start:draw");
-    
+        
     ofSetColor(255, 255, 255);
     ofDrawBitmapString("start", 15, 15);
     title.draw(0, 0);
@@ -40,6 +40,8 @@ public:
   
   void stateExit() {
     ofLog(OF_LOG_NOTICE, "start:stateExit");
+    
+    // getSharedData().captured.clear();
   };
   
   string getName() {
