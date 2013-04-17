@@ -65,9 +65,9 @@ public:
         stateMachine.getSharedData().timestamp = ofToString(message.getArgAsInt64(0));
         stateMachine.getSharedData().target = message.getArgAsString(1);
         stateMachine.changeState("capture");  // received after sharing.
-      } else if (message.getAddress() == "/states/capture") {
+      } else if (message.getAddress() == "/end") {
         string text = message.getArgAsString(0);
-        stateMachine.changeState("share");  // received after typing.
+        stateMachine.changeState("start");
       }
     }
   };
