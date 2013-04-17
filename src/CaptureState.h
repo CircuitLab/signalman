@@ -29,6 +29,7 @@ class CaptureState : public Apex::ofxState<SharedData> {
   map<string, ofImage> images;
   unsigned char * mirrored;
   ofImage logo;
+  ofSoundPlayer shutter;
   ofTrueTypeFont courier;
   ofVideoGrabber videoGrabber;
   ofxOpenNI openNIDevice;
@@ -79,6 +80,8 @@ public:
     
     logo.loadImage("futuresemaphore_logo.png");
     logo.resize(500, 400);
+    
+    shutter.loadSound("shutter.wav");
     
     courier.loadFont("Courier New Bold.ttf", 64);
     
@@ -180,6 +183,8 @@ public:
       if (c == target[cursor]) {  // captured!
         flash = 255;
         capturedChar = c;
+        
+        shutter.play();
         
         ofImage image;
         image.setFromPixels(videoGrabber.getPixels(), CAMERA_WIDTH, CAMERA_HEIGHT, OF_IMAGE_COLOR);
