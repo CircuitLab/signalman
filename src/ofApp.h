@@ -62,7 +62,7 @@ public:
       ofLog(OF_LOG_NOTICE, "osc received: " + message.getAddress());
       
       if (message.getAddress() == "/states/start") {
-        stateMachine.getSharedData().timestamp = ofToString(message.getArgAsInt64(0));
+        stateMachine.getSharedData().timestamp = message.getArgAsString(0);
         stateMachine.getSharedData().target = message.getArgAsString(1);
         stateMachine.changeState("capture");  // received after sharing.
       } else if (message.getAddress() == "/end") {
