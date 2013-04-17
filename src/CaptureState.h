@@ -89,7 +89,8 @@ public:
   };
   
   void stateEnter() {
-    ofLog(OF_LOG_NOTICE, "capture:stateEnter");    
+    ofLog(OF_LOG_NOTICE, "capture:stateEnter");
+    flash = 0;
     cursor = 0;
     target = getSharedData().target;
     isCapturing = true;
