@@ -35,6 +35,9 @@ public:
     ofSetVerticalSync(true);
     ofBackground(0);
     
+    ofFullscreen();
+    ofHideCursor();
+    
     sender.setup(OSC_SEND_HOST, OSC_SEND_PORT);
     receiver.setup(OSC_RECEIVE_PORT);
     
@@ -96,6 +99,12 @@ private:
         break;
       case 'f':
         ofToggleFullscreen();
+        break;
+      case 's':
+        ofShowCursor();
+        break;
+      case 'h':
+        ofHideCursor();
         break;
     }
   };
