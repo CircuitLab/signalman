@@ -149,8 +149,8 @@ public:
     
     if (!isCapturing) return;
     
-    // guide = getSharedData().images[ofToLower(ofToString(target[cursor]))];
-    // guide.draw(500, 0);
+    guide = getSharedData().images[ofToLower(ofToString(target[cursor]))];
+    guide.draw(500, 0);
     
     ofPushMatrix();
     
@@ -290,13 +290,11 @@ private:
     ofLog(OF_LOG_NOTICE, ofToString(response.status));
     ofLog(OF_LOG_NOTICE, ofToString(response.responseBody));
     
-    SharedData sharedData = getSharedData();
-    
     ofxOscMessage message;
     message.setAddress("/captured");
-    message.addStringArg(sharedData.timestamp);
+    message.addStringArg(getSharedData().timestamp);
     message.addStringArg(target);
-    sharedData.sender.sendMessage(message);
+    getSharedData().sender.sendMessage(message);
 
     changeState("share");
   };
