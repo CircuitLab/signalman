@@ -165,6 +165,10 @@ public:
       float ld = 270 + ofRadToDeg(atan2(lsp.y - lhp.y, lsp.x - lhp.x));
       float rd = 90 + ofRadToDeg(atan2(rhp.y - rsp.y, rhp.x - rsp.x));      
       
+      if (rd < 0) {
+        rd = 360 - rd;
+      }
+      
       int lp = int(ld + 22.5) / 45 % 8;
       int rp = int(rd + 22.5) / 45 % 8;
       
