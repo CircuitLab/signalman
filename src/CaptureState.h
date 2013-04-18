@@ -48,15 +48,15 @@ public:
     chars[4][2] = 'F';
     chars[4][3] = 'G';
     chars[6][5] = 'H';
-    // chars[7][5] = 'I';
-    chars[5][0] = 'I';
+    chars[5][7] = 'I';
+    // chars[5][0] = 'I';
     chars[0][2] = 'J';
     chars[5][0] = 'K';
     chars[5][1] = 'L';
     chars[5][2] = 'M';
     chars[5][3] = 'N';
-    chars[6][0] = 'O';
     // chars[7][6] = 'O';
+    chars[6][7] = 'O';
     chars[6][0] = 'P';
     chars[6][1] = 'Q';
     chars[6][2] = 'R';
@@ -163,10 +163,13 @@ public:
       ofPoint rsp = rightShoulder.getProjectivePosition();
       
       float ld = 270 + ofRadToDeg(atan2(lsp.y - lhp.y, lsp.x - lhp.x));
-      float rd = 90 + ofRadToDeg(atan2(rhp.y - rsp.y, rhp.x - rsp.x));
+      float rd = 90 + ofRadToDeg(atan2(rhp.y - rsp.y, rhp.x - rsp.x));      
       
       int lp = int(ld + 22.5) / 45 % 8;
       int rp = int(rd + 22.5) / 45 % 8;
+      
+      ofDrawBitmapString("          " + ofToString(ld) + ":" + ofToString(lp), 20, 160);
+      ofDrawBitmapString("          " + ofToString(rd) + ":" + ofToString(rp), 20, 180);
       
       if (lp < 0 || rp < 0) break;
       
