@@ -166,14 +166,14 @@ public:
       float rd = 90 + ofRadToDeg(atan2(rhp.y - rsp.y, rhp.x - rsp.x));      
       
       if (rd < 0) {
-        rd = 360 - rd;
+        rd = 360 + rd;
       }
       
       int lp = int(ld + 22.5) / 45 % 8;
       int rp = int(rd + 22.5) / 45 % 8;
       
-      ofDrawBitmapString("          " + ofToString(ld) + ":" + ofToString(lp), 20, 160);
-      ofDrawBitmapString("          " + ofToString(rd) + ":" + ofToString(rp), 20, 180);
+      ofDrawBitmapString("          " + ofToString(lp) + ":" + ofToString(ld), 20, 160);
+      ofDrawBitmapString("          " + ofToString(rp) + ":" + ofToString(rd), 20, 180);
       
       if (lp < 0 || rp < 0) break;
       
