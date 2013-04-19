@@ -40,8 +40,6 @@ public:
   
   void stateExit() {
     ofLog(OF_LOG_NOTICE, "start:stateExit");
-    
-    // getSharedData().captured.clear();
   };
   
   string getName() {

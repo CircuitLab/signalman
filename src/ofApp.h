@@ -34,7 +34,7 @@ public:
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
     ofBackground(0);
-    
+    ofSetWindowPosition(-1000, 0);
     ofSetFullscreen(true);
     ofHideCursor();
     
@@ -47,6 +47,7 @@ public:
     for (char c = 'a'; c <= 'z'; ++c) {
       ofImage image;
       image.loadImage("guides/" + ofToString(c) + ".jpg");
+      image.resize(500, 459);
       stateMachine.getSharedData().guides.insert(map<string, ofImage>::value_type(ofToString(c), image));
     }
     

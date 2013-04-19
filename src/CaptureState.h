@@ -29,7 +29,10 @@ class CaptureState : public Apex::ofxState<SharedData> {
   ofImage logo;
   ofImage guide;
   ofSoundPlayer shutter;
-  ofTrueTypeFont courier;
+  ofTrueTypeFont currentFont;
+  ofTrueTypeFont guideFont;
+  ofRectangle currentRect;
+  ofRectangle guideRect;
   ofxOpenNI openNIDevice;
   ofxHttpUtils httpUtils;
   ofxGifEncoder encoder;
@@ -49,13 +52,11 @@ public:
     chars[4][3] = 'G';
     chars[6][5] = 'H';
     chars[5][7] = 'I';
-    // chars[5][0] = 'I';
     chars[0][2] = 'J';
     chars[5][0] = 'K';
     chars[5][1] = 'L';
     chars[5][2] = 'M';
     chars[5][3] = 'N';
-    // chars[7][6] = 'O';
     chars[6][7] = 'O';
     chars[6][0] = 'P';
     chars[6][1] = 'Q';
@@ -85,7 +86,8 @@ public:
     
     shutter.loadSound("shutter.wav");
     
-    courier.loadFont("Courier New Bold.ttf", 192);
+    currentFont.loadFont("Courier New.ttf", 1024);
+    guideFont.loadFont("Courier New Bold.ttf", 192);
     
     ofAddListener(httpUtils.newResponseEvent, this, &CaptureState::onResponse);
     ofAddListener(ofxGifEncoder::OFX_GIF_SAVE_FINISHED, this, &CaptureState::onGifSaved);
@@ -118,13 +120,14 @@ public:
     // openNIDevice.drawDebug();
     // ofPopMatrix();
     
-    openNIDevice.drawImage();
+    openNIDevice.drawImage((1980 - 1440) / 2, 0, 1440, 1080);
     
     ofEnableAlphaBlending();
-    logo.draw(0, 0);
+    logo.draw((1920 - 1440) / 2, -50);
     ofDisableAlphaBlending();
-        
-    ofSetColor(255, 255, 255);
+    
+    ofPushStyle();
+    ofSetColor(192, 192, 192);
     ofDrawBitmapString("capture", 15, 15);
         
     if (flash > 0) {
@@ -145,9 +148,9 @@ public:
     ofPushMatrix();
     
     int numUsers = openNIDevice.getNumTrackedUsers();
-    // cout << numUsers << " users found." << endl;
     
     for (int i = 0; i < numUsers; i++) {
+      openNIDevice.drawSkeleton((1980 - 1440) / 2, 0, 1440, 1080, i);
       ofxOpenNIUser &user = openNIDevice.getTrackedUser(i);
       
       if (!user.isSkeleton()) break;
@@ -172,8 +175,8 @@ public:
       int lp = int(ld + 22.5) / 45 % 8;
       int rp = int(rd + 22.5) / 45 % 8;
       
-      ofDrawBitmapString("          " + ofToString(lp) + ":" + ofToString(ld), 20, 160);
-      ofDrawBitmapString("          " + ofToString(rp) + ":" + ofToString(rd), 20, 180);
+      ofDrawBitmapString("        L: " + ofToString(lp) + " / " + ofToString(ld), 20, ofGetHeight() - 100);
+      ofDrawBitmapString("        R: " + ofToString(rp) + " / " + ofToString(rd), 20, ofGetHeight() - 80);
       
       if (lp < 0 || rp < 0) break;
       
@@ -187,7 +190,7 @@ public:
         
         ofImage image;
         image.setFromPixels(openNIDevice.getImagePixels());
-        captured.insert(map<string, ofImage>::value_type(ofGetTimestampString(), image));
+        captured.insert(map<string, ofImage>::value_type(ofGetTimestampString() + "-" + ofToString(c), image));
         
         if (++cursor >= target.length()) {
           isCapturing = false;
@@ -208,18 +211,28 @@ public:
         }
       }
       
-      ofDrawBitmapString("captured: " + ofToString(c), 20, 100);
-      ofDrawBitmapString("    next: " + ofToString(target[cursor]), 20, 120);
-      ofDrawBitmapString("          " + ofToString(lp) + ":" + ofToString(rp), 20, 80);
+      ofDrawBitmapString("captured: " + ofToString(c), 20, ofGetHeight() - 60);
+      ofDrawBitmapString("    next: " + ofToString(target[cursor]), 20, ofGetHeight() - 40);
+      ofDrawBitmapString("          " + ofToString(lp) + ":" + ofToString(rp), 20, ofGetHeight() - 20);
       
-      guide.draw(ofGetWidth() - logo.getWidth(), ofGetHeight() - logo.getHeight());
+      guide.draw(ofGetWidth() - guide.getWidth(), ofGetHeight() - guide.getHeight());
       
       ofPushStyle();
-      ofSetColor(255, 255, 255, 192);
-      courier.drawString(ofToString(target[cursor]), 200, 200);
+      ofSetColor(255, 255, 255, 128);
+      currentRect = currentFont.getStringBoundingBox(ofToString(c), 0, 0);
+      currentFont.drawString(ofToString(c),
+        (ofGetWidth() / 2) - (currentRect.getWidth() / 2),
+        ofGetHeight() - currentRect.getHeight() / 3 + 50);
+      ofPopStyle();
+
+      ofPushStyle();
+      ofSetColor(255, 255, 255);
+      guideRect = guideFont.getStringBoundingBox(ofToString(target[cursor]), 0, 0);
+      guideFont.drawString(ofToString(target[cursor]), ofGetWidth() - guideRect.getWidth(), guideRect.getHeight());
       ofPopStyle();
     }
     
+    ofPopStyle();
     ofPopMatrix();
   };
   
@@ -294,7 +307,7 @@ private:
     message.addStringArg(target);
     getSharedData().sender.sendMessage(message);
     
-    // getSharedData().captured = captured;
+    getSharedData().captured = &captured;
     changeState("share");
   };
 };
