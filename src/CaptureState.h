@@ -145,6 +145,12 @@ public:
     
     guide = getSharedData().guides[ofToLower(ofToString(target[cursor]))];
     
+    // ofPushStyle();
+    // ofSetColor(255, 255, 255);
+    // guideRect = guideFont.getStringBoundingBox(ofToString(target[cursor]), 0, 0);
+    // guideFont.drawString(ofToString(target[cursor]), ofGetWidth() - guideRect.getWidth(), guideRect.getHeight());
+    // ofPopStyle();
+    
     ofPushMatrix();
     
     int numUsers = openNIDevice.getNumTrackedUsers();
@@ -223,12 +229,6 @@ public:
       currentFont.drawString(ofToString(c),
         (ofGetWidth() / 2) - (currentRect.getWidth() / 2),
         ofGetHeight() - currentRect.getHeight() / 3 + 50);
-      ofPopStyle();
-
-      ofPushStyle();
-      ofSetColor(255, 255, 255);
-      guideRect = guideFont.getStringBoundingBox(ofToString(target[cursor]), 0, 0);
-      guideFont.drawString(ofToString(target[cursor]), ofGetWidth() - guideRect.getWidth(), guideRect.getHeight());
       ofPopStyle();
     }
     
