@@ -5,14 +5,14 @@ Play flag semaphore with the depth sensor!
 ## Dependencies
 
 * Kinect
-* openFrameworks 0.7.4
+* openFrameworks 0.8.0
   * ofxOsc
-  * gameoverhack/ofxOpenNI
-  * neilmendoza/ofxStateMachine
-  * jesusgollonet/ofxGifEncoder
-  * arturoc/ofxHttpUtils
+  * [ofxOpenNI](https://github.com/gameoverhack/ofxOpenNI)
+  * [ofxStateMachine](https://github.com/neilmendoza/ofxStateMachine)
+  * [ofxGifEncoder](https://github.com/jesusgollonet/ofxGifEncoder)
+  * [ofxHttpUtils](https://github.com/arturoc/ofxHttpUtils)
 
-Development under Mac OS X 10.8 Mountain Lion + Xcode 4.6
+Development under Mac OS X 10.8 Mountain Lion + Xcode 5
 
 ## Installation
 

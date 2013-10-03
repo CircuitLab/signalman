@@ -379,7 +379,7 @@
 				770F032414B9969E003CCE99 /* libXnVNite_1_5_2.dylib */,
 			);
 			name = lib;
-			path = bin/data/openni/lib;
+			path = ../../../../../of_v0.7.4_osx_release/addons/ofxOpenNI/mac/copy_to_data_openni_path/lib;
 			sourceTree = "<group>";
 		};
 		770F033314B996AE003CCE99 /* include */ = {
@@ -390,7 +390,7 @@
 				770F037414B996AE003CCE99 /* openni */,
 			);
 			name = include;
-			path = ../../../addons/ofxOpenNI/include;
+			path = ../../../../../of_v0.7.4_osx_release/addons/ofxOpenNI/include;
 			sourceTree = "<group>";
 		};
 		770F033414B996AE003CCE99 /* libusb */ = {
@@ -600,7 +600,7 @@
 				77EBF17A14BEF08600D2C8EC /* ofxOpenNITypes.h */,
 			);
 			name = src;
-			path = ../../../addons/ofxOpenNI/src;
+			path = ../../../../../of_v0.7.4_osx_release/addons/ofxOpenNI/src;
 			sourceTree = "<group>";
 		};
 		BB4B014C10F69532006C3DED /* addons */ = {
@@ -915,6 +915,8 @@
 /* Begin PBXProject section */
 		E4B69B4C0A3A1720003C02F2 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "Signalman" */;
 			compatibilityVersion = "Xcode 2.4";
 			developmentRegion = English;
@@ -1087,7 +1089,7 @@
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
@@ -1180,7 +1182,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(SRCROOT)/bin/data/openni/lib\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1199,7 +1201,7 @@
 				GCC_MODEL_TUNING = G4;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
@@ -1292,7 +1294,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(SRCROOT)/bin/data/openni/lib\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
